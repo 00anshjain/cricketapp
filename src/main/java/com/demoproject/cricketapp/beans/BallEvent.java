@@ -1,10 +1,12 @@
 package com.demoproject.cricketapp.beans;
 
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class BallEvent {
     private String id;
