@@ -1,4 +1,4 @@
-package com.demoproject.cricketapp.custom.exception;
+package com.demoproject.cricketapp.exception.custom;
 
 import lombok.Data;
 

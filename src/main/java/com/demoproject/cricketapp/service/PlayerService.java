@@ -4,7 +4,7 @@ import com.demoproject.cricketapp.beans.Player;
 import com.demoproject.cricketapp.beans.request.PlayerRequest;
 import com.demoproject.cricketapp.beans.response.PlayerInfoResponse;
 
-import com.demoproject.cricketapp.custom.exception.NoDataFoundException;
+import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import com.demoproject.cricketapp.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

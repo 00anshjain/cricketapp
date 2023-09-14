@@ -1,7 +1,7 @@
-package com.demoproject.cricketapp.advice;
+package com.demoproject.cricketapp.exception;
 
-import com.demoproject.cricketapp.custom.exception.InvalidUserInputException;
-import com.demoproject.cricketapp.custom.exception.NoDataFoundException;
+import com.demoproject.cricketapp.exception.custom.InvalidUserInputException;
+import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

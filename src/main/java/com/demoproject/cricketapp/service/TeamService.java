@@ -4,14 +4,13 @@ package com.demoproject.cricketapp.service;
 import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.beans.request.TeamRequest;
 import com.demoproject.cricketapp.beans.response.TeamInfoResponse;
-import com.demoproject.cricketapp.custom.exception.NoDataFoundException;
+import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import com.demoproject.cricketapp.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
