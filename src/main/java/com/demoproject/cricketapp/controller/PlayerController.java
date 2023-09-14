@@ -3,7 +3,6 @@ package com.demoproject.cricketapp.controller;
 import com.demoproject.cricketapp.beans.Player;
 import com.demoproject.cricketapp.beans.request.PlayerRequest;
 import com.demoproject.cricketapp.beans.response.PlayerInfoResponse;
-import com.demoproject.cricketapp.beans.response.TeamInfoResponse;
 import com.demoproject.cricketapp.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +23,10 @@ public class PlayerController {
     @GetMapping("")
     public ResponseEntity<List<PlayerInfoResponse>> getAllTeamsInfo() {
         return new ResponseEntity<List<PlayerInfoResponse>>(playerService.getAllPlayersInfo(), HttpStatus.OK);
+    }
+    @GetMapping("{id}")
+    public ResponseEntity<Player> getPlayerById(@PathVariable String id) {
+        return new ResponseEntity<Player>(playerService.getPlayerById(id), HttpStatus.OK);
     }
 
 }

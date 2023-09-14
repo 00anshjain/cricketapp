@@ -4,6 +4,7 @@ package com.demoproject.cricketapp.service;
 import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.beans.request.TeamRequest;
 import com.demoproject.cricketapp.beans.response.TeamInfoResponse;
+import com.demoproject.cricketapp.exception.custom.InvalidUserInputException;
 import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import com.demoproject.cricketapp.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +26,13 @@ public class TeamService {
         return team;
     }
 
-//    public Team getTeamById(String teamId) {
-//        Optional<Team> team = teamRepository.findById(teamId);
-//
-//    }
+    public Team getTeamById(String teamId) {
+        Team team = teamRepository.findById(teamId).orElse(null);
+        if (team == null) {
+            throw new InvalidUserInputException("No team found for id = " + teamId + ". Kindly check");
+        }
+        return team;
+    }
 
     public List<TeamInfoResponse> getAllTeamsInfo() {
         List<Team> allTeams = teamRepository.findAll();

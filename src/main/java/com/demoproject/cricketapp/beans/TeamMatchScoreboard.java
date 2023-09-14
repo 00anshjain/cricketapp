@@ -1,9 +1,7 @@
 package com.demoproject.cricketapp.beans;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 

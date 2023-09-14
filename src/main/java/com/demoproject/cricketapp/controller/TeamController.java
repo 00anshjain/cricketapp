@@ -26,4 +26,8 @@ public class TeamController {
         return new ResponseEntity<List<TeamInfoResponse>>(teamService.getAllTeamsInfo(), HttpStatus.OK);
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<Team> getTeamById(@PathVariable String id) {
+        return new ResponseEntity<Team>(teamService.getTeamById(id), HttpStatus.OK);
+    }
 }

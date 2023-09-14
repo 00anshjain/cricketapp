@@ -3,7 +3,7 @@ package com.demoproject.cricketapp.service;
 import com.demoproject.cricketapp.beans.Player;
 import com.demoproject.cricketapp.beans.request.PlayerRequest;
 import com.demoproject.cricketapp.beans.response.PlayerInfoResponse;
-
+import com.demoproject.cricketapp.exception.custom.InvalidUserInputException;
 import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import com.demoproject.cricketapp.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,14 @@ public class PlayerService {
                 .name(playerRequest.getName())
                 .age(playerRequest.getAge()).playerType(playerRequest.getPlayerType()).battingSkill(playerRequest.getBattingSkill()).bowlingSkill(playerRequest.getBowlingSkill()).build();
         playerRepository.save(player);
+        return player;
+    }
+
+    public Player getPlayerById(String playerId) {
+        Player player = playerRepository.findById(playerId).orElse(null);
+        if (player == null) {
+            throw new InvalidUserInputException("No player found for id = " + playerId + ". Kindly check");
+        }
         return player;
     }
 

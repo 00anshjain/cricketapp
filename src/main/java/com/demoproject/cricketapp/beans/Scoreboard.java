@@ -2,9 +2,7 @@ package com.demoproject.cricketapp.beans;
 
 import com.demoproject.cricketapp.commons.enums.TossChoice;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @NoArgsConstructor
