@@ -7,7 +7,6 @@ import com.demoproject.cricketapp.beans.response.TeamInfoResponse;
 import com.demoproject.cricketapp.exception.custom.InvalidUserInputException;
 import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import com.demoproject.cricketapp.repository.TeamRepository;
-import com.demoproject.cricketapp.utils.TeamPlayerUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ import java.util.UUID;
 public class TeamService {
 
     private final TeamRepository teamRepository;
-    private final TeamPlayerUtil teamPlayerUtil;
 
     public Team addTeam(TeamRequest teamRequest) {
         Team team = Team.builder().id(UUID.randomUUID().toString()).teamName(teamRequest.getTeamName()).build();
@@ -54,9 +52,9 @@ public class TeamService {
         return teamInfoResponses;
     }
 
-    public Team addPlayerToTeam(String teamId, String playerId) {
-        return teamPlayerUtil.addPlayerToTeam(teamId, playerId);
-    }
+//    public Team addPlayerToTeam(String teamId, String playerId) {
+//        return teamPlayerService.addPlayerToTeam(teamId, playerId);
+//    }
     public void dropTeam(String teamId) {
         teamRepository.deleteById(teamId);
     }
