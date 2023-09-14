@@ -17,28 +17,44 @@ public class PlayerTeamService {
     private final PlayerService playerService;
     private final TeamService teamService;
 
-    public boolean checkPlayerInTeam(Team team, String playerId) {
+    public int getPlayerPositionInTeam(Team team, String playerId) {
         List<Player> players = team.getPlayers();
         if(players == null || players.isEmpty())
-            return false;
-        for(Player player : players) {
-            if(Objects.equals(player.getId(), playerId)) {
-                return true;
+            return -1;
+        for(int i = 0; i < players.size(); i++)
+        {
+            if(Objects.equals(players.get(i).getId(), playerId)) {
+                return i;
             }
         }
-        return false;
+        return -1;
     }
     public Team addPlayerToTeam(String teamId, String playerId) {
         Team team = teamService.getTeamById(teamId);
         // Exception for team not found handled in getTeamById method TeamService class.
-        if(checkPlayerInTeam(team, playerId))
+        Player player = playerService.getPlayerById(playerId);
+        // Exception for player not found handled in getPlayerById method in Player class.
+        if(getPlayerPositionInTeam(team, playerId) != -1)
             throw new InvalidUserInputException("Player already exists in teams. Kindly check playerId and teamId");
         List<Player> players = team.getPlayers();
         if(players == null)
             players = new ArrayList<Player>();
+        players.add(player);
+        team.setPlayers(players);
+        teamService.dropTeam(team.getId());
+        return teamService.addTeam(team);
+    }
+
+    public Team dropPlayerFromTeam(String teamId, String playerId) {
+        Team team = teamService.getTeamById(teamId);
+        // Exception for team not found handled in getTeamById method TeamService class.
         Player player = playerService.getPlayerById(playerId);
         // Exception for player not found handled in getPlayerById method in Player class.
-        players.add(player);
+        int index = getPlayerPositionInTeam(team, playerId);
+        if(index == -1)
+            throw new InvalidUserInputException("Player doesn't exists in teams. Cannot drop player from team");
+        List<Player> players = team.getPlayers();
+        players.remove(index);
         team.setPlayers(players);
         teamService.dropTeam(team.getId());
         return teamService.addTeam(team);

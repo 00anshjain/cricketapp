@@ -37,4 +37,10 @@ public class TeamController {
     public ResponseEntity<Team> addPlayerToTeam(@PathVariable String teamId, @PathVariable String playerId) {
         return new ResponseEntity<Team>(playerTeamService.addPlayerToTeam(teamId, playerId), HttpStatus.OK);
     }
+
+    @DeleteMapping("{teamId}/player/{playerId}")
+    public ResponseEntity<Team> dropPlayerFromTeam(@PathVariable String teamId, @PathVariable String playerId) {
+        return new ResponseEntity<Team>(playerTeamService.dropPlayerFromTeam(teamId, playerId), HttpStatus.OK);
+    }
+
 }
