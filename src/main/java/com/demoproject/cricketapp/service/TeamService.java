@@ -26,6 +26,12 @@ public class TeamService {
         return team;
     }
 
+    public Team addTeam(Team team) {
+        teamRepository.save(team);
+        return team;
+    }
+
+
     public Team getTeamById(String teamId) {
         Team team = teamRepository.findById(teamId).orElse(null);
         if (team == null) {
@@ -46,4 +52,10 @@ public class TeamService {
         return teamInfoResponses;
     }
 
+//    public Team addPlayerToTeam(String teamId, String playerId) {
+//        return teamPlayerService.addPlayerToTeam(teamId, playerId);
+//    }
+    public void dropTeam(String teamId) {
+        teamRepository.deleteById(teamId);
+    }
 }
