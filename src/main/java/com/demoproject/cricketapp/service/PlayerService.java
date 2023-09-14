@@ -1,10 +1,10 @@
 package com.demoproject.cricketapp.service;
 
 import com.demoproject.cricketapp.beans.Player;
-import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.beans.request.PlayerRequest;
 import com.demoproject.cricketapp.beans.response.PlayerInfoResponse;
-import com.demoproject.cricketapp.beans.response.TeamInfoResponse;
+
+import com.demoproject.cricketapp.custom.exception.NoDataFoundException;
 import com.demoproject.cricketapp.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,9 @@ public class PlayerService {
     public List<PlayerInfoResponse> getAllPlayersInfo() {
         List<PlayerInfoResponse> playerInfoResponses = new ArrayList<>();
         List<Player> allPlayers = playerRepository.findAll();
+        if(allPlayers.isEmpty()) {
+            throw new NoDataFoundException("No player found. Kindly add players first");
+        }
         for(Player player : allPlayers) {
             playerInfoResponses.add(PlayerInfoResponse.builder().id(player.getId()).name(player.getName()).age(player.getAge()).numberOfMatches(player.getNumberOfMatches()).totalRuns(player.getTotalRuns()).totalWickets(player.getTotalWickets()).playerType(player.getPlayerType()).battingSkill(player.getBattingSkill()).bowlingSkill(player.getBowlingSkill()).build());
         }
