@@ -30,4 +30,9 @@ public class TeamController {
     public ResponseEntity<Team> getTeamById(@PathVariable String id) {
         return new ResponseEntity<Team>(teamService.getTeamById(id), HttpStatus.OK);
     }
+
+    @GetMapping("/{teamId}/player/{playerId}")
+    public ResponseEntity<Team> addPlayerToTeam(@PathVariable String teamId, @PathVariable String playerId) {
+        return new ResponseEntity<Team>(teamService.addPlayerToTeam(teamId, playerId), HttpStatus.OK);
+    }
 }
