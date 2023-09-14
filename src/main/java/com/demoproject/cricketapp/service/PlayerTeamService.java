@@ -39,8 +39,10 @@ public class PlayerTeamService {
         List<Player> players = team.getPlayers();
         if(players == null)
             players = new ArrayList<Player>();
+
         players.add(player);
         team.setPlayers(players);
+        team.setCaptainId(playerId); //To be removed later
         teamService.dropTeam(team.getId());
         return teamService.addTeam(team);
     }
@@ -51,14 +53,21 @@ public class PlayerTeamService {
         Player player = playerService.getPlayerById(playerId);
         // Exception for player not found handled in getPlayerById method in Player class.
         int index = getPlayerPositionInTeam(team, playerId);
-        if(index == -1)
+        if (index == -1)
             throw new InvalidUserInputException("Player doesn't exists in teams. Cannot drop player from team");
         List<Player> players = team.getPlayers();
+        if (Objects.equals(team.getCaptainId(), players.get(index).getId()))
+            team.setCaptainId("");
         players.remove(index);
         team.setPlayers(players);
         teamService.dropTeam(team.getId());
         return teamService.addTeam(team);
     }
 
+    public Boolean hasTeamCaptain(String teamId) {
+        Team team = teamService.getTeamById(teamId);
+        String captainId = team.getCaptainId();
+        return captainId != null && !captainId.isEmpty();
+    }
 
 }

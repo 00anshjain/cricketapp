@@ -52,9 +52,6 @@ public class TeamService {
         return teamInfoResponses;
     }
 
-//    public Team addPlayerToTeam(String teamId, String playerId) {
-//        return teamPlayerService.addPlayerToTeam(teamId, playerId);
-//    }
     public void dropTeam(String teamId) {
         teamRepository.deleteById(teamId);
     }
