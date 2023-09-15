@@ -3,8 +3,7 @@ package com.demoproject.cricketapp.controller;
 import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.beans.request.TeamRequest;
 import com.demoproject.cricketapp.beans.response.TeamInfoResponse;
-import com.demoproject.cricketapp.facade.CricketServicesFacade;
-import com.demoproject.cricketapp.service.PlayerTeamService;
+import com.demoproject.cricketapp.facade.PlayerTeamFacade;
 import com.demoproject.cricketapp.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,32 +17,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
-    private final PlayerTeamService playerTeamService;
-    private final CricketServicesFacade cricketServicesFacade;
+//    private final PlayerTeamService playerTeamService;
+    private final PlayerTeamFacade playerTeamFacade;
 
     @PostMapping("")
     public ResponseEntity<Team> addTeam(@RequestBody TeamRequest teamRequest) {
-        return new ResponseEntity<Team>(cricketServicesFacade.addTeam(teamRequest), HttpStatus.OK);
+        return new ResponseEntity<Team>(playerTeamFacade.addTeam(teamRequest), HttpStatus.OK);
     }
 
     @GetMapping("")
     public ResponseEntity<List<TeamInfoResponse>> getAllTeamsInfo() {
-        return new ResponseEntity<List<TeamInfoResponse>>(cricketServicesFacade.getAllTeamsInfo(), HttpStatus.OK);
+        return new ResponseEntity<List<TeamInfoResponse>>(playerTeamFacade.getAllTeamsInfo(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Team> getTeamById(@PathVariable String id) {
-        return new ResponseEntity<Team>(cricketServicesFacade.getTeamById(id), HttpStatus.OK);
+        return new ResponseEntity<Team>(playerTeamFacade.getTeamById(id), HttpStatus.OK);
     }
 
     @PostMapping("{teamId}/player/{playerId}")
     public ResponseEntity<Team> addPlayerToTeam(@PathVariable String teamId, @PathVariable String playerId) {
-        return new ResponseEntity<Team>(playerTeamService.addPlayerToTeam(teamId, playerId), HttpStatus.OK);
+        return new ResponseEntity<Team>(playerTeamFacade.addPlayerToTeam(teamId, playerId), HttpStatus.OK);
     }
 
     @DeleteMapping("{teamId}/player/{playerId}")
     public ResponseEntity<Team> dropPlayerFromTeam(@PathVariable String teamId, @PathVariable String playerId) {
-        return new ResponseEntity<Team>(playerTeamService.dropPlayerFromTeam(teamId, playerId), HttpStatus.OK);
+        return new ResponseEntity<Team>(playerTeamFacade.dropPlayerFromTeam(teamId, playerId), HttpStatus.OK);
     }
 
 }

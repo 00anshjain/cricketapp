@@ -2,7 +2,6 @@ package com.demoproject.cricketapp.service;
 
 import com.demoproject.cricketapp.beans.Match;
 import com.demoproject.cricketapp.beans.Scoreboard;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
