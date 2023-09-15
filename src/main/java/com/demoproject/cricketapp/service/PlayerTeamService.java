@@ -1,10 +1,9 @@
 package com.demoproject.cricketapp.service;
 
 import com.demoproject.cricketapp.beans.Player;
+import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.exception.custom.InvalidUserInputException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import com.demoproject.cricketapp.beans.Team;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -3,6 +3,7 @@ package com.demoproject.cricketapp.controller;
 import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.beans.request.TeamRequest;
 import com.demoproject.cricketapp.beans.response.TeamInfoResponse;
+import com.demoproject.cricketapp.facade.CricketServicesFacade;
 import com.demoproject.cricketapp.service.PlayerTeamService;
 import com.demoproject.cricketapp.service.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -18,19 +19,21 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
     private final PlayerTeamService playerTeamService;
+    private final CricketServicesFacade cricketServicesFacade;
+
     @PostMapping("")
     public ResponseEntity<Team> addTeam(@RequestBody TeamRequest teamRequest) {
-        return new ResponseEntity<Team>(teamService.addTeam(teamRequest), HttpStatus.OK);
+        return new ResponseEntity<Team>(cricketServicesFacade.addTeam(teamRequest), HttpStatus.OK);
     }
 
     @GetMapping("")
     public ResponseEntity<List<TeamInfoResponse>> getAllTeamsInfo() {
-        return new ResponseEntity<List<TeamInfoResponse>>(teamService.getAllTeamsInfo(), HttpStatus.OK);
+        return new ResponseEntity<List<TeamInfoResponse>>(cricketServicesFacade.getAllTeamsInfo(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Team> getTeamById(@PathVariable String id) {
-        return new ResponseEntity<Team>(teamService.getTeamById(id), HttpStatus.OK);
+        return new ResponseEntity<Team>(cricketServicesFacade.getTeamById(id), HttpStatus.OK);
     }
 
     @PostMapping("{teamId}/player/{playerId}")

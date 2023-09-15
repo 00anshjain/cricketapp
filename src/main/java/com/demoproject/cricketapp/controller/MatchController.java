@@ -1,21 +1,18 @@
 package com.demoproject.cricketapp.controller;
 
-import com.demoproject.cricketapp.beans.Player;
-import com.demoproject.cricketapp.beans.request.PlayerRequest;
-import com.demoproject.cricketapp.beans.response.PlayerInfoResponse;
-import com.demoproject.cricketapp.service.MatchService;
-import com.demoproject.cricketapp.service.PlayerService;
+import com.demoproject.cricketapp.service.impl.MatchServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("Match")
+@RequestMapping("match")
 @RequiredArgsConstructor
 public class MatchController {
-    private final MatchService matchService;
+    private final MatchServiceImpl matchServiceImpl;
 
+//    @PostMapping("")
+//    public ResponseEntity<Match> createMatch(@RequestBody MatchRequest matchRequest) {
+//        return new ResponseEntity<Match>(matchService.createMatch(matchRequest), HttpStatus.OK);
+//    }
 }
