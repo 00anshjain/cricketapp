@@ -12,9 +12,9 @@ public class BallEvent {
     private int ballNumber;
 
     @DBRef
-    private Player batsman; // Use @DBRef to store a reference to the Player document
+    private String batsmanId; // Use @DBRef to store a reference to the Player document
     @DBRef
-    private Player bowler; // Use @DBRef to store a reference to the Player document
+    private String bowlerId; // Use @DBRef to store a reference to the Player document
 
     private String result;
 }
