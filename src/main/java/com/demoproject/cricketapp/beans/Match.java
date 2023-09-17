@@ -1,12 +1,10 @@
 package com.demoproject.cricketapp.beans;
 
-import com.demoproject.cricketapp.commons.enums.TossChoice;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -27,7 +25,7 @@ public class Match {
 //    private Team team2;
 
     private Scoreboard scoreboard;
-    private int overs;
+    private int overs = 0;
     private Toss toss;
 
     private String matchWonByTeamID;

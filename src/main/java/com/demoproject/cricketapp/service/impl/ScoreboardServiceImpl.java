@@ -4,9 +4,13 @@ import com.demoproject.cricketapp.beans.Scoreboard;
 import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.service.ScoreboardService;
 import com.demoproject.cricketapp.utils.ScoreboardUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
+@RequiredArgsConstructor
 public class ScoreboardServiceImpl implements ScoreboardService {
 
     @Override

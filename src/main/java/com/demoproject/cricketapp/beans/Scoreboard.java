@@ -1,6 +1,5 @@
 package com.demoproject.cricketapp.beans;
 
-import com.demoproject.cricketapp.commons.enums.TossChoice;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

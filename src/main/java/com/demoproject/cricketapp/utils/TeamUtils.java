@@ -2,10 +2,7 @@ package com.demoproject.cricketapp.utils;
 
 import com.demoproject.cricketapp.beans.Player;
 import com.demoproject.cricketapp.beans.Team;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;

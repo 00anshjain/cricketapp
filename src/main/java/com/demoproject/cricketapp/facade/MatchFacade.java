@@ -17,5 +17,5 @@ public interface MatchFacade {
 
     List<MatchInfoResponse> getAllMatches();
 
-    Match playMatch(MatchRequest matchRequest);
+    Match createAndPlayMatch(MatchRequest matchRequest);
 }

@@ -15,7 +15,6 @@ import com.demoproject.cricketapp.utils.MatchUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,19 +40,34 @@ public class MatchFacadeImpl implements MatchFacade {
         return matchService.getAllMatches();
     }
 
-    public Match playMatch(MatchRequest matchRequest) {
+    public void validateMatchRequest(MatchRequest matchRequest) {
         Team team1 = teamService.getTeamById(matchRequest.getTeam1Id());
         Team team2 = teamService.getTeamById(matchRequest.getTeam2Id());
         MatchUtils.validateTeamForMatch(team1);
         MatchUtils.validateTeamForMatch(team2);
+        MatchUtils.validateOvers(matchRequest.getOvers());
+    }
+    public Match createMatch(MatchRequest matchRequest) {
+        Team team1 = teamService.getTeamById(matchRequest.getTeam1Id());
+        Team team2 = teamService.getTeamById(matchRequest.getTeam2Id());
         Scoreboard scoreboard = scoreboardService.createScoreboard(team1, team2);
         Toss toss = MatchUtils.haveToss(team1, team2);
-
         return Match.builder()
                 .id(UUID.randomUUID().toString())
                 .toss(toss)
                 .overs(matchRequest.getOvers())
                 .dateTime(matchRequest.getDateTime())
                 .scoreboard(scoreboard).build();
+
     }
+
+//    public void playMatch(Match match) {
+//
+//    }
+    public Match createAndPlayMatch(MatchRequest matchRequest) {
+        validateMatchRequest(matchRequest);
+        Match match = createMatch(matchRequest);
+        return match;
+    }
+
 }

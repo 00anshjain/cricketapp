@@ -4,7 +4,6 @@ import com.demoproject.cricketapp.beans.Match;
 import com.demoproject.cricketapp.beans.request.MatchRequest;
 import com.demoproject.cricketapp.beans.response.MatchInfoResponse;
 import com.demoproject.cricketapp.facade.MatchFacade;
-import com.demoproject.cricketapp.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ public class MatchController {
         return new ResponseEntity<List<MatchInfoResponse>>(matchFacade.getAllMatches(), HttpStatus.OK);
     }
     @PostMapping("")
-    public ResponseEntity<Match> createMatch(@RequestBody MatchRequest matchRequest) {
-        return new ResponseEntity<Match>(matchFacade.playMatch(matchRequest), HttpStatus.OK);
+    public ResponseEntity<Match> createAndPlayMatch(@RequestBody MatchRequest matchRequest) {
+        return new ResponseEntity<Match>(matchFacade.createAndPlayMatch(matchRequest), HttpStatus.OK);
     }
 }
