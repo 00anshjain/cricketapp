@@ -18,9 +18,11 @@ public class ScoreboardUtils {
         copyProperties(team, teamClone);
         List<Player> players = teamClone.getPlayers();
         for(int i = 0; i < 11; i++) {
-            players.get(i).setNumberOfMatches(1);
-            players.get(i).setTotalRuns(0);
-            players.get(i).setTotalRuns(0);
+            Player player = players.get(i);
+            player.setNumberOfMatches(1);
+            player.setTotalRuns(0);
+            player.setTotalRuns(0);
+            players.set(i, player);
         }
         teamClone.setPlayers(players);
         return teamClone;

@@ -6,7 +6,6 @@ import com.demoproject.cricketapp.beans.response.MatchInfoResponse;
 import com.demoproject.cricketapp.facade.MatchFacade;
 import com.demoproject.cricketapp.service.*;
 import com.demoproject.cricketapp.utils.MatchUtils;
-import com.google.common.collect.Maps;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -86,8 +85,8 @@ public class MatchFacadeImpl implements MatchFacade {
         battingTeamPlayers.sort(Comparator.comparingInt(Player::getBattingSkill).reversed());
         bowlingTeamPlayers.sort(Comparator.comparingInt(Player::getBowlingSkill).reversed());
         List<Player> topBowlingTeamPlayers = bowlingTeamPlayers.subList(0, 5);
-        System.out.println(battingTeamPlayers);
-        System.out.println(topBowlingTeamPlayers);
+//        System.out.println(battingTeamPlayers);
+//        System.out.println(topBowlingTeamPlayers);
 
         long maximumBalls = match.getOvers() * 6L;
         int batsman1 = 0, batsman2 = 1, bowler = 0;
@@ -110,7 +109,6 @@ public class MatchFacadeImpl implements MatchFacade {
                     .setBatsman2Id(battingTeamPlayers.get(batsman2).getId())
                     .setBowlerId(topBowlingTeamPlayers.get(bowler).getId());
             ballEvent.setResult(ballEvent.getBallResult());
-            System.out.println(ballEvent);
             ballEventService.save(ballEvent);
             scoreboard.update(ballEvent);
             String ballResult = ballEvent.getResult();
@@ -156,6 +154,10 @@ public class MatchFacadeImpl implements MatchFacade {
         match = playMatch(match);
         saveMatchData(match);
         return match;
+    }
+    public List<BallEvent> getAllBallEventsInMatch(String matchId)
+    {
+        return ballEventService.getAllBallEventInMatch(matchId);
     }
 
 }

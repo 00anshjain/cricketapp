@@ -8,9 +8,9 @@ import com.demoproject.cricketapp.exception.custom.InvalidUserInputException;
 import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import com.demoproject.cricketapp.repository.PlayerRepository;
 import com.demoproject.cricketapp.service.PlayerService;
+import com.demoproject.cricketapp.utils.PlayerUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.demoproject.cricketapp.utils.PlayerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,7 @@ public class PlayerServiceImpl implements PlayerService {
         return player;
     }
     public void addPlayer(Player player) {
+        System.out.println("Saving player : " + player);
         playerRepository.save(player);
     }
     public void dropPlayerById(String playerId)

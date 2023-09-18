@@ -1,5 +1,6 @@
 package com.demoproject.cricketapp.utils;
 
+import com.demoproject.cricketapp.beans.BallEvent;
 import com.demoproject.cricketapp.beans.Match;
 import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.beans.Toss;
@@ -7,10 +8,7 @@ import com.demoproject.cricketapp.commons.enums.TossChoice;
 import com.demoproject.cricketapp.exception.custom.InvalidMatchRequestException;
 import lombok.experimental.UtilityClass;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 
 @UtilityClass
@@ -28,6 +26,20 @@ public class MatchUtils {
             throw new InvalidMatchRequestException("Invalid match request. The number of overs must be specified and should be greater than zero.");
         }
     }
+    public Comparator<BallEvent> comp = new Comparator<BallEvent>() {
+        @Override
+        public int compare(BallEvent o1, BallEvent o2) {
+            if (o1.getIsFirstInnings() != o2.getIsFirstInnings()) {
+                if (o1.getIsFirstInnings())
+                    return -1; //dont swap
+                return 1;
+            }
+            if (o1.getBallNumber() > o2.getBallNumber())
+                return 1; //swap
+            else
+                return -1;
+        }
+    };
 
     public static Toss haveToss(Team team1, Team team2) {
         Random random = new Random();

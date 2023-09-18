@@ -17,7 +17,7 @@ public class PlayerUtils {
         mergedPlayer.setId(player1.getId());
         mergedPlayer.setName(player1.getName());
         mergedPlayer.setAge(player1.getAge());
-        mergedPlayer.setNumberOfMatches(player1.getNumberOfMatches());
+        mergedPlayer.setNumberOfMatches(player1.getNumberOfMatches() + player2.getNumberOfMatches());
         mergedPlayer.setTotalRuns(player1.getTotalRuns() + player2.getTotalRuns());
         mergedPlayer.setCenturies(player1.getCenturies() + player2.getCenturies());
         mergedPlayer.setHighestScore(Math.max(player1.getHighestScore(), player2.getHighestScore()));

@@ -26,4 +26,5 @@ public interface MatchFacade {
     Match playInnings(Match match, Boolean isFirstInnings);
     Match playMatch(Match match);
     void saveMatchData(Match match);
+    List<BallEvent> getAllBallEventsInMatch(String matchId);
 }

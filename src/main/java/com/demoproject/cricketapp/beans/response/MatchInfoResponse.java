@@ -1,7 +1,5 @@
 package com.demoproject.cricketapp.beans.response;
 
-import com.demoproject.cricketapp.beans.Scoreboard;
-import com.demoproject.cricketapp.beans.Toss;
 import lombok.Builder;
 import lombok.Data;
 
