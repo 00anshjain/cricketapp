@@ -25,4 +25,8 @@ public class MatchController {
     public ResponseEntity<Match> createAndPlayMatch(@RequestBody MatchRequest matchRequest) {
         return new ResponseEntity<Match>(matchFacade.createAndPlayMatch(matchRequest), HttpStatus.OK);
     }
+    @GetMapping("{matchId}")
+    public ResponseEntity<Match> getMatchById(@PathVariable String matchId) {
+        return new ResponseEntity<Match>(matchFacade.getMatchById(matchId), HttpStatus.OK);
+    }
 }

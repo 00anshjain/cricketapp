@@ -19,11 +19,6 @@ public class Match {
     private String id;
     private LocalDateTime dateTime;
 
-//    @DBRef Removed as if team captain changed, player changed should not affect match object
-//    private Team team1; // Use @DBRef to store a reference to the Team document
-////    @DBRef
-//    private Team team2;
-
     private Scoreboard scoreboard;
     private int overs = 0;
     private Toss toss;

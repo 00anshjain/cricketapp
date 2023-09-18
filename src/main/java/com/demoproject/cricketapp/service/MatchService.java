@@ -15,4 +15,6 @@ public interface MatchService {
     Scoreboard getMatchScoreboard(String matchId);
 
     List<MatchInfoResponse> getAllMatches();
+
+    void save(Match match);
 }

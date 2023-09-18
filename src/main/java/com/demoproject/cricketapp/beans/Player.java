@@ -24,7 +24,6 @@ public class Player {
     private int highestScore;
     private int totalWickets;
     private int mostWickets;
-    private double avgWickets;
     private PlayerType playerType;
     private int battingSkill;
     private int bowlingSkill;
