@@ -26,6 +26,12 @@ public class MatchUtils {
             throw new InvalidMatchRequestException("Invalid match request. The number of overs must be specified and should be greater than zero.");
         }
     }
+
+    public int getTarget(Match match, String bowlingTeamId) {
+        int firstInningsScore = Objects.equals(bowlingTeamId, match.getScoreboard().getTeam1().getId()) ? match.getScoreboard().getTeam1Score() : match.getScoreboard().getTeam2Score();
+        return firstInningsScore + 1;
+    }
+
     public Comparator<BallEvent> comp = new Comparator<BallEvent>() {
         @Override
         public int compare(BallEvent o1, BallEvent o2) {

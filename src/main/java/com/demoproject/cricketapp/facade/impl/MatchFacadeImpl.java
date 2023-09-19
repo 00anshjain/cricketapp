@@ -63,16 +63,12 @@ public class MatchFacadeImpl implements MatchFacade {
         Map<String, String> teamsMap = MatchUtils.getBattingAndBowlingTeams(match, isFirstInnings);
         String battingTeamId = teamsMap.get("battingTeamId");
         String bowlingTeamId = teamsMap.get("bowlingTeamId");
-        int target = -1;
-        if(!isFirstInnings) {
-            int firstInningsScore = Objects.equals(bowlingTeamId, match.getScoreboard().getTeam1().getId()) ? match.getScoreboard().getTeam1Score() : match.getScoreboard().getTeam2Score();
-            target = firstInningsScore + 1;
-        }
-        String team1Id = match.getScoreboard().getTeam1().getId();
-        String team2Id = match.getScoreboard().getTeam2().getId();
+        int target = isFirstInnings ? -1 : MatchUtils.getTarget(match, bowlingTeamId);
+
         List<Player> battingTeamPlayers, bowlingTeamPlayers;
         Scoreboard scoreboard = match.getScoreboard();
-        if (Objects.equals(battingTeamId, team1Id))
+
+        if (Objects.equals(battingTeamId, match.getScoreboard().getTeam1().getId()))
         {
             battingTeamPlayers = match.getScoreboard().getTeam1().getPlayers();
             bowlingTeamPlayers = match.getScoreboard().getTeam2().getPlayers();
@@ -82,18 +78,19 @@ public class MatchFacadeImpl implements MatchFacade {
             bowlingTeamPlayers = match.getScoreboard().getTeam1().getPlayers();
             battingTeamPlayers = match.getScoreboard().getTeam2().getPlayers();
         }
-        battingTeamPlayers.sort(Comparator.comparingInt(Player::getBattingSkill).reversed());
-        bowlingTeamPlayers.sort(Comparator.comparingInt(Player::getBowlingSkill).reversed());
-        List<Player> topBowlingTeamPlayers = bowlingTeamPlayers.subList(0, 5);
-//        System.out.println(battingTeamPlayers);
-//        System.out.println(topBowlingTeamPlayers);
+        getBattingOrderSorted(battingTeamPlayers);
+        List<Player> topFiveBowlers = getTopFiveBowlers(bowlingTeamPlayers);
 
         long maximumBalls = match.getOvers() * 6L;
+//        Map <String, Integer> currentPlayers = new HashMap<>();
+//        currentPlayers.put("batsman1", 0);
+//        currentPlayers.put("batsman2", 1);
+//        currentPlayers.put("bowler", 0);
         int batsman1 = 0, batsman2 = 1, bowler = 0;
         int score = 0;
         for(long ballNumber = 1; ballNumber <= maximumBalls; ballNumber++)
         {
-            double wicketProbability = topBowlingTeamPlayers.get(bowler).getBowlingSkill() > battingTeamPlayers.get(batsman1).getBattingSkill() ? 0.1 * ((double)topBowlingTeamPlayers.get(bowler).getBowlingSkill() - (double)battingTeamPlayers.get(batsman1).getBattingSkill())/100 : 0.05D;
+            double wicketProbability = topFiveBowlers.get(bowler).getBowlingSkill() > battingTeamPlayers.get(batsman1).getBattingSkill() ? 0.1 * ((double)topFiveBowlers.get(bowler).getBowlingSkill() - (double)battingTeamPlayers.get(batsman1).getBattingSkill())/100 : 0.05D;
             double random = Math.random();
 
             // Factory Design Pattern
@@ -107,7 +104,7 @@ public class MatchFacadeImpl implements MatchFacade {
                     .setBowlingTeamId(bowlingTeamId)
                     .setBatsman1Id(battingTeamPlayers.get(batsman1).getId())
                     .setBatsman2Id(battingTeamPlayers.get(batsman2).getId())
-                    .setBowlerId(topBowlingTeamPlayers.get(bowler).getId());
+                    .setBowlerId(topFiveBowlers.get(bowler).getId());
             ballEvent.setResult(ballEvent.getBallResult());
             ballEventService.save(ballEvent);
             scoreboard.update(ballEvent);
@@ -137,6 +134,16 @@ public class MatchFacadeImpl implements MatchFacade {
         match.setScoreboard(scoreboard);
         return match;
     }
+
+    private List<Player> getTopFiveBowlers(List<Player> bowlingTeamPlayers) {
+        bowlingTeamPlayers.sort(Comparator.comparingInt(Player::getBowlingSkill).reversed());
+        return bowlingTeamPlayers.subList(0, 5);
+    }
+
+    private void getBattingOrderSorted(List<Player> battingTeamPlayers) {
+        battingTeamPlayers.sort(Comparator.comparingInt(Player::getBattingSkill).reversed());
+    }
+
     public Match playMatch(Match match) {
         Match matchAfterFirstInnings = playInnings(match, true);
         Match matchAfterSecondInnings = playInnings(matchAfterFirstInnings, false);

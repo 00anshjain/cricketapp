@@ -31,7 +31,6 @@ public class PlayerServiceImpl implements PlayerService {
         return player;
     }
     public void addPlayer(Player player) {
-        System.out.println("Saving player : " + player);
         playerRepository.save(player);
     }
     public void dropPlayerById(String playerId)
