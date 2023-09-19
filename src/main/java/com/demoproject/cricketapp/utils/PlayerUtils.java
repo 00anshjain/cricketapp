@@ -1,6 +1,9 @@
 package com.demoproject.cricketapp.utils;
 
 import com.demoproject.cricketapp.beans.Player;
+import com.demoproject.cricketapp.beans.request.PlayerRequest;
+import com.demoproject.cricketapp.commons.enums.PlayerType;
+import com.demoproject.cricketapp.exception.custom.InvalidUserInputException;
 import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import lombok.experimental.UtilityClass;
 
@@ -30,4 +33,32 @@ public class PlayerUtils {
         return mergedPlayer;
     }
 
+    public static void validatePlayerRequest(PlayerRequest playerRequest) {
+        if (playerRequest == null) {
+            throw new InvalidUserInputException("Player request cannot be null");
+        }
+        if (playerRequest.getName() == null || playerRequest.getName().isEmpty()) {
+            throw new InvalidUserInputException("Player name is required");
+        }
+        if (playerRequest.getAge() <= 0) {
+            throw new InvalidUserInputException("Player age must be greater than 0");
+        }
+        if (playerRequest.getPlayerType() == null || !isValidPlayerType(playerRequest.getPlayerType())) {
+            throw new InvalidUserInputException("Invalid player type");
+        }
+        if (playerRequest.getBattingSkill() < 0 || playerRequest.getBattingSkill() > 100) {
+            throw new InvalidUserInputException("Batting skill must be between 0 and 100");
+        }
+        if (playerRequest.getBowlingSkill() < 0 || playerRequest.getBowlingSkill() > 100) {
+            throw new InvalidUserInputException("Bowling skill must be between 0 and 100");
+        }
+    }
+    private static boolean isValidPlayerType(PlayerType playerType) {
+        for (PlayerType validType : PlayerType.values()) {
+            if (validType == playerType) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

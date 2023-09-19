@@ -33,7 +33,6 @@ public class PlayerServiceImpl implements PlayerService {
                 .bowlingSkill(playerRequest.getBowlingSkill())
                 .build();
         addPlayer(player);
-//        playerRepository.save(player);
         return player;
     }
     public void addPlayer(Player player) {

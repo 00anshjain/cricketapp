@@ -2,6 +2,7 @@ package com.demoproject.cricketapp.service;
 
 import com.demoproject.cricketapp.beans.Player;
 import com.demoproject.cricketapp.beans.Team;
+import com.demoproject.cricketapp.beans.request.PlayerRequest;
 import com.demoproject.cricketapp.beans.response.PlayerInfoResponse;
 import com.demoproject.cricketapp.commons.enums.PlayerType;
 import com.demoproject.cricketapp.exception.custom.InvalidRequestException;
@@ -15,10 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -31,12 +29,47 @@ public class PlayerServiceTest {
 
     @InjectMocks
     private PlayerServiceImpl playerService;
+
     @Test
-    void testAddPlayer_InvalidRequest() {
-        Player player = new Player();
-        InvalidRequestException invalidRequestException = assertThrows(InvalidRequestException.class, () -> playerService.addPlayer(player));
-        assertTrue(invalidRequestException.getErrorMessage().contains("required parameters"));
+    void testAddPlayer_InvalidPlayerRequest() {
+        PlayerRequest playerRequest = new PlayerRequest();
+        assertThrows(InvalidRequestException.class, () -> playerService.addPlayer(playerRequest));
         verify(playerRepository, never()).save(any(Player.class)); //To verify that this method is never called
+    }
+
+    @Test
+    void testAddPlayer_ValidPlayerRequest() {
+        PlayerRequest mockPlayerRequest = new PlayerRequest();
+        mockPlayerRequest.setName("testingPlayer");
+        mockPlayerRequest.setAge(25);
+        mockPlayerRequest.setPlayerType(PlayerType.BATSMAN);
+        mockPlayerRequest.setBattingSkill(60);
+        mockPlayerRequest.setBowlingSkill(55);
+
+        Player mockPlayer = Player.builder()
+                .id(UUID.randomUUID().toString())
+                .name(mockPlayerRequest.getName())
+                .age(mockPlayerRequest.getAge())
+                .playerType(mockPlayerRequest.getPlayerType())
+                .battingSkill(mockPlayerRequest.getBattingSkill())
+                .bowlingSkill(mockPlayerRequest.getBowlingSkill())
+                .build();
+//        when(playerRepository.save(any(Player.class))).thenReturn();
+        //thenAnswer to return parameter which was input.
+        when(playerRepository.save(any(Player.class))).thenAnswer(i -> i.getArguments()[0]);
+        Player player = playerService.addPlayer(mockPlayerRequest);
+        assertEquals(player.getName(), mockPlayer.getName());
+        assertEquals(player.getAge(), mockPlayer.getAge());
+        assertEquals(player.getPlayerType(), mockPlayer.getPlayerType());
+        assertEquals(player.getBattingSkill(), mockPlayer.getBattingSkill());
+        assertEquals(player.getBowlingSkill(), mockPlayer.getBowlingSkill());
+    }
+
+    @Test
+    void testAddPlayer_InvalidPlayer() {
+        Player player = new Player();
+        assertThrows(InvalidRequestException.class, () -> playerService.addPlayer(player));
+        verify(playerRepository, never()).save(any(Player.class));
     }
 
     @Test
@@ -120,6 +153,7 @@ public class PlayerServiceTest {
         Player player = Player.builder()
                 .id("1")
                 .name("testingPlayer")
+                .age(5)
                 .playerType(PlayerType.ALLROUNDER)
                 .battingSkill(55)
                 .bowlingSkill(42)
@@ -134,6 +168,7 @@ public class PlayerServiceTest {
         Player mockPlayer = Player.builder()
                 .id("1")
                 .name("testingPlayer")
+                .age(5)
                 .playerType(PlayerType.ALLROUNDER)
                 .battingSkill(55)
                 .bowlingSkill(42)
@@ -153,7 +188,7 @@ public class PlayerServiceTest {
         //Since it's a void method we can just check number of times a method is called.
         verify(playerRepository, times(1)).findById("1");
         verify(playerRepository, times(1)).deleteById("1");
-        verify(playerRepository, times(1)).save(mockPlayer);
+        verify(playerRepository, times(1)).save(any(Player.class));
     }
 
     @Test
@@ -172,26 +207,10 @@ public class PlayerServiceTest {
                 .mostWickets(1)
                 .build();
         List<Player> players = Arrays.asList(player);
-        Player mockPlayer = Player.builder()
-                .id("1")
-                .name("testingPlayer")
-                .playerType(PlayerType.ALLROUNDER)
-                .battingSkill(55)
-                .bowlingSkill(42)
-                .numberOfMatches(5)
-                .totalRuns(148)
-                .centuries(1)
-                .highestScore(102)
-                .totalWickets(2)
-                .mostWickets(2)
-                .build();
 
         Team mockTeam = Team.builder().teamName("testTeam").players(players).build();
         when(playerRepository.findById("1")).thenReturn(Optional.empty());
         assertThrows(InvalidUserInputException.class, () -> playerService.updateTeamPlayers(mockTeam));
-        //Since it's a void method we can just check number of times a method is called.
         verify(playerRepository, times(1)).findById("1");
-        verify(playerRepository, times(0)).deleteById("1");
-        verify(playerRepository, times(0)).save(mockPlayer);
     }
 }

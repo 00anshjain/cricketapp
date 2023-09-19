@@ -22,6 +22,8 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
     public Team addTeam(TeamRequest teamRequest) {
+        if(teamRequest == null || teamRequest.getTeamName() == null || teamRequest.getTeamName().isEmpty())
+            throw new InvalidUserInputException("Necessary parameters required for team creation are not given. Kindly check");
         Team team = Team.builder().id(UUID.randomUUID().toString()).teamName(teamRequest.getTeamName()).build();
         teamRepository.save(team);
         return team;
