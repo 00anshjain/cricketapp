@@ -78,11 +78,11 @@ public class MatchFacadeImpl implements MatchFacade {
             bowlingTeamPlayers = match.getScoreboard().getTeam1().getPlayers();
             battingTeamPlayers = match.getScoreboard().getTeam2().getPlayers();
         }
-        getBattingOrderSorted(battingTeamPlayers);
-        List<Player> topFiveBowlers = getTopFiveBowlers(bowlingTeamPlayers);
+        MatchUtils.getBattingOrderSorted(battingTeamPlayers);
+        List<Player> topFiveBowlers = MatchUtils.getTopFiveBowlers(bowlingTeamPlayers);
 
         long maximumBalls = match.getOvers() * 6L;
-        Map<String, Integer> currentPlayers = initialiseCurrentPlayers();
+        Map<String, Integer> currentPlayers = MatchUtils.initialiseCurrentPlayers();
         int inningsScore = 0, battingTeamSize = battingTeamPlayers.size();
         for(long ballNumber = 1; ballNumber <= maximumBalls; ballNumber++)
         {
@@ -110,55 +110,14 @@ public class MatchFacadeImpl implements MatchFacade {
             ballEventService.save(ballEvent);
 
             scoreboard.update(ballEvent);
-            inningsScore = updateInningsScore(inningsScore, ballEvent);
-            updateCurrentPlayers(currentPlayers, ballEvent);
+            inningsScore = MatchUtils.updateInningsScore(inningsScore, ballEvent);
+            MatchUtils.updateCurrentPlayers(currentPlayers, ballEvent);
 
             if(!isFirstInnings && inningsScore >= target)
                 break;
         }
         match.setScoreboard(scoreboard);
         return match;
-    }
-
-    private int updateInningsScore(int inningsScore, BallEvent ballEvent)
-    {
-        String ballResult = ballEvent.getResult();
-        if(!Objects.equals(ballResult, "W"))
-            inningsScore += Integer.parseInt(ballResult);
-        return inningsScore;
-    }
-    private void updateCurrentPlayers(Map<String, Integer> currentPlayers, BallEvent ballEvent) {
-        String ballResult = ballEvent.getResult();
-        int batsman1 = currentPlayers.get("batsman1");
-        int batsman2 = currentPlayers.get("batsman2");
-        if (Objects.equals(ballResult, "1") || Objects.equals(ballResult, "3")) {
-            currentPlayers.put("batsman1", batsman2);
-            currentPlayers.put("batsman2", batsman1);
-        } else if (Objects.equals(ballResult, "W")) {
-            currentPlayers.put("batsman1", Math.max(batsman1, batsman2) + 1);
-        }
-        if (ballEvent.getBallNumber() % 6 == 0) {
-            int temp = currentPlayers.get("batsman1");
-            currentPlayers.put("batsman1", currentPlayers.get("batsman2"));
-            currentPlayers.put("batsman2", temp);
-            currentPlayers.put("bowler", (currentPlayers.get("bowler") + 1) % 5); //bowler logic might be changed later.
-        }
-    }
-    public Map<String, Integer> initialiseCurrentPlayers() {
-        Map <String, Integer> currentPlayers = new HashMap<>();
-        currentPlayers.put("batsman1", 0);
-        currentPlayers.put("batsman2", 1);
-        currentPlayers.put("bowler", 0);
-        return currentPlayers;
-    }
-
-    private List<Player> getTopFiveBowlers(List<Player> bowlingTeamPlayers) {
-        bowlingTeamPlayers.sort(Comparator.comparingInt(Player::getBowlingSkill).reversed());
-        return bowlingTeamPlayers.subList(0, 5);
-    }
-
-    private void getBattingOrderSorted(List<Player> battingTeamPlayers) {
-        battingTeamPlayers.sort(Comparator.comparingInt(Player::getBattingSkill).reversed());
     }
 
     public Match playMatch(Match match) {

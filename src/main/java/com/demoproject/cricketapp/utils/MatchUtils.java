@@ -1,9 +1,6 @@
 package com.demoproject.cricketapp.utils;
 
-import com.demoproject.cricketapp.beans.BallEvent;
-import com.demoproject.cricketapp.beans.Match;
-import com.demoproject.cricketapp.beans.Team;
-import com.demoproject.cricketapp.beans.Toss;
+import com.demoproject.cricketapp.beans.*;
 import com.demoproject.cricketapp.commons.enums.TossChoice;
 import com.demoproject.cricketapp.exception.custom.InvalidMatchRequestException;
 import lombok.experimental.UtilityClass;
@@ -102,4 +99,49 @@ public class MatchUtils {
             return "None";
         }
     }
+
+
+    public int updateInningsScore(int inningsScore, BallEvent ballEvent)
+    {
+        String ballResult = ballEvent.getResult();
+        if(!Objects.equals(ballResult, "W"))
+            inningsScore += Integer.parseInt(ballResult);
+        return inningsScore;
+    }
+    public void updateCurrentPlayers(Map<String, Integer> currentPlayers, BallEvent ballEvent) {
+        String ballResult = ballEvent.getResult();
+        int batsman1 = currentPlayers.get("batsman1");
+        int batsman2 = currentPlayers.get("batsman2");
+        if (Objects.equals(ballResult, "1") || Objects.equals(ballResult, "3")) {
+            currentPlayers.put("batsman1", batsman2);
+            currentPlayers.put("batsman2", batsman1);
+        } else if (Objects.equals(ballResult, "W")) {
+            currentPlayers.put("batsman1", Math.max(batsman1, batsman2) + 1);
+        }
+        if (ballEvent.getBallNumber() % 6 == 0) {
+            int temp = currentPlayers.get("batsman1");
+            currentPlayers.put("batsman1", currentPlayers.get("batsman2"));
+            currentPlayers.put("batsman2", temp);
+            currentPlayers.put("bowler", (currentPlayers.get("bowler") + 1) % 5); //bowler logic might be changed later.
+        }
+    }
+    public Map<String, Integer> initialiseCurrentPlayers() {
+        Map <String, Integer> currentPlayers = new HashMap<>();
+        currentPlayers.put("batsman1", 0);
+        currentPlayers.put("batsman2", 1);
+        currentPlayers.put("bowler", 0);
+        return currentPlayers;
+    }
+
+    public List<Player> getTopFiveBowlers(List<Player> bowlingTeamPlayers) {
+        bowlingTeamPlayers.sort(Comparator.comparingInt(Player::getBowlingSkill).reversed());
+        return bowlingTeamPlayers.subList(0, 5);
+    }
+
+    public void getBattingOrderSorted(List<Player> battingTeamPlayers) {
+        battingTeamPlayers.sort(Comparator.comparingInt(Player::getBattingSkill).reversed());
+    }
+
+
+
 }
