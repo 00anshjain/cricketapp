@@ -12,7 +12,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Scoreboard implements BallEventObserver{
+public class Scoreboard {
     private String id;
     private Team team1; // Use @DBRef to store a reference to the Team document
     private Team team2; // Use @DBRef to store a reference to the Team document
