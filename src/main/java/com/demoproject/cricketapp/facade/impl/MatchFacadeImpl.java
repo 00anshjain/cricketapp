@@ -82,14 +82,15 @@ public class MatchFacadeImpl implements MatchFacade {
         List<Player> topFiveBowlers = getTopFiveBowlers(bowlingTeamPlayers);
 
         long maximumBalls = match.getOvers() * 6L;
-//        Map <String, Integer> currentPlayers = new HashMap<>();
-//        currentPlayers.put("batsman1", 0);
-//        currentPlayers.put("batsman2", 1);
-//        currentPlayers.put("bowler", 0);
-        int batsman1 = 0, batsman2 = 1, bowler = 0;
-        int score = 0;
+        Map<String, Integer> currentPlayers = initialiseCurrentPlayers();
+        int inningsScore = 0, battingTeamSize = battingTeamPlayers.size();
         for(long ballNumber = 1; ballNumber <= maximumBalls; ballNumber++)
         {
+            int batsman1 = currentPlayers.get("batsman1");
+            int batsman2 = currentPlayers.get("batsman2");
+            if((batsman1 == battingTeamSize) || (batsman2 == battingTeamSize))
+                break;
+            int bowler = currentPlayers.get("bowler");
             double wicketProbability = topFiveBowlers.get(bowler).getBowlingSkill() > battingTeamPlayers.get(batsman1).getBattingSkill() ? 0.1 * ((double)topFiveBowlers.get(bowler).getBowlingSkill() - (double)battingTeamPlayers.get(batsman1).getBattingSkill())/100 : 0.05D;
             double random = Math.random();
 
@@ -107,32 +108,48 @@ public class MatchFacadeImpl implements MatchFacade {
                     .setBowlerId(topFiveBowlers.get(bowler).getId());
             ballEvent.setResult(ballEvent.getBallResult());
             ballEventService.save(ballEvent);
+
             scoreboard.update(ballEvent);
-            String ballResult = ballEvent.getResult();
-            if(!Objects.equals(ballResult, "W"))
-                score += Integer.parseInt(ballResult);
-            if(Objects.equals(ballResult, "1") || Objects.equals(ballResult, "3")) {
-                int temp = batsman1;
-                batsman1 = batsman2;
-                batsman2 = temp;
-            }
-            else if(Objects.equals(ballResult, "W")) {
-                batsman1 = Math.max(batsman1, batsman2) + 1;
-                if(batsman1 == 11)
-                    break;
-            }
-            if(ballNumber % 6 == 0)
-            {
-                int temp = batsman1;
-                batsman1 = batsman2;
-                batsman2 = temp;
-                bowler = (bowler+1) % 5; //bowler logic to be changed later.
-            }
-            if(!isFirstInnings && score >= target)
+            inningsScore = updateInningsScore(inningsScore, ballEvent);
+            updateCurrentPlayers(currentPlayers, ballEvent);
+
+            if(!isFirstInnings && inningsScore >= target)
                 break;
         }
         match.setScoreboard(scoreboard);
         return match;
+    }
+
+    private int updateInningsScore(int inningsScore, BallEvent ballEvent)
+    {
+        String ballResult = ballEvent.getResult();
+        if(!Objects.equals(ballResult, "W"))
+            inningsScore += Integer.parseInt(ballResult);
+        return inningsScore;
+    }
+    private void updateCurrentPlayers(Map<String, Integer> currentPlayers, BallEvent ballEvent) {
+        String ballResult = ballEvent.getResult();
+        int batsman1 = currentPlayers.get("batsman1");
+        int batsman2 = currentPlayers.get("batsman2");
+        if (Objects.equals(ballResult, "1") || Objects.equals(ballResult, "3")) {
+            currentPlayers.put("batsman1", batsman2);
+            currentPlayers.put("batsman2", batsman1);
+        } else if (Objects.equals(ballResult, "W")) {
+            currentPlayers.put("batsman1", Math.max(batsman1, batsman2) + 1);
+        }
+        if (ballEvent.getBallNumber() % 6 == 0) {
+            int temp = currentPlayers.get("batsman1");
+            currentPlayers.put("batsman1", currentPlayers.get("batsman2"));
+            currentPlayers.put("batsman2", temp);
+            currentPlayers.put("bowler", (currentPlayers.get("bowler") + 1) % 5); //bowler logic might be changed later.
+        }
+    }
+    public Map<String, Integer> initialiseCurrentPlayers() {
+        Map <String, Integer> currentPlayers = new HashMap<>();
+        currentPlayers.put("batsman1", 0);
+        currentPlayers.put("batsman2", 1);
+        currentPlayers.put("bowler", 0);
+        return currentPlayers;
     }
 
     private List<Player> getTopFiveBowlers(List<Player> bowlingTeamPlayers) {

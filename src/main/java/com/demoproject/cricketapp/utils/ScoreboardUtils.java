@@ -21,7 +21,10 @@ public class ScoreboardUtils {
             Player player = players.get(i);
             player.setNumberOfMatches(1);
             player.setTotalRuns(0);
-            player.setTotalRuns(0);
+            player.setTotalWickets(0);
+            player.setHighestScore(0);
+            player.setMostWickets(0);
+            player.setCenturies(0);
             players.set(i, player);
         }
         teamClone.setPlayers(players);
