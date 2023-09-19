@@ -4,6 +4,7 @@ import com.demoproject.cricketapp.beans.Player;
 import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.beans.request.PlayerRequest;
 import com.demoproject.cricketapp.beans.response.PlayerInfoResponse;
+import com.demoproject.cricketapp.exception.custom.InvalidRequestException;
 import com.demoproject.cricketapp.exception.custom.InvalidUserInputException;
 import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import com.demoproject.cricketapp.repository.PlayerRepository;
@@ -26,11 +27,18 @@ public class PlayerServiceImpl implements PlayerService {
         Player player = Player.builder()
                 .id(UUID.randomUUID().toString())
                 .name(playerRequest.getName())
-                .age(playerRequest.getAge()).playerType(playerRequest.getPlayerType()).battingSkill(playerRequest.getBattingSkill()).bowlingSkill(playerRequest.getBowlingSkill()).build();
-        playerRepository.save(player);
+                .age(playerRequest.getAge())
+                .playerType(playerRequest.getPlayerType())
+                .battingSkill(playerRequest.getBattingSkill())
+                .bowlingSkill(playerRequest.getBowlingSkill())
+                .build();
+        addPlayer(player);
+//        playerRepository.save(player);
         return player;
     }
     public void addPlayer(Player player) {
+        if(player == null || player.getId() == null || player.getId().isEmpty() || player.getName() == null || player.getName().isEmpty() || player.getAge() <= 0 || player.getBattingSkill() <= 0 || player.getBowlingSkill() <= 0)
+            throw new InvalidRequestException("Invalid request to add player. Player should have minimum required parameters");
         playerRepository.save(player);
     }
     public void dropPlayerById(String playerId)

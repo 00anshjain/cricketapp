@@ -1,6 +1,7 @@
 package com.demoproject.cricketapp.exception;
 
 import com.demoproject.cricketapp.exception.custom.InvalidMatchRequestException;
+import com.demoproject.cricketapp.exception.custom.InvalidRequestException;
 import com.demoproject.cricketapp.exception.custom.InvalidUserInputException;
 import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import org.springframework.http.HttpStatus;
@@ -25,5 +26,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidMatchRequestException.class)
     public ResponseEntity<String> handleInvalidMatchRequestException(InvalidMatchRequestException invalidMatchRequestException){
         return new ResponseEntity<String>(invalidMatchRequestException.getErrorMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<String> handleInvalidRequestException(InvalidRequestException invalidRequestException){
+        return new ResponseEntity<String>(invalidRequestException.getErrorMessage(), HttpStatus.BAD_REQUEST);
     }
 }

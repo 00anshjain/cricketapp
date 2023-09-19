@@ -3,13 +3,18 @@ package com.demoproject.cricketapp.facade.impl;
 import com.demoproject.cricketapp.beans.*;
 import com.demoproject.cricketapp.beans.request.MatchRequest;
 import com.demoproject.cricketapp.beans.response.MatchInfoResponse;
+import com.demoproject.cricketapp.exception.custom.InvalidMatchRequestException;
 import com.demoproject.cricketapp.facade.MatchFacade;
 import com.demoproject.cricketapp.service.*;
 import com.demoproject.cricketapp.utils.MatchUtils;
+import com.demoproject.cricketapp.utils.TeamUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 
 @Component
@@ -39,6 +44,7 @@ public class MatchFacadeImpl implements MatchFacade {
         Team team2 = teamService.getTeamById(matchRequest.getTeam2Id());
         MatchUtils.validateTeamForMatch(team1);
         MatchUtils.validateTeamForMatch(team2);
+        validateNoCommonPlayer(team1, team2);
         MatchUtils.validateOvers(matchRequest.getOvers());
     }
     public Match createMatch(MatchRequest matchRequest) {
@@ -52,6 +58,14 @@ public class MatchFacadeImpl implements MatchFacade {
                 .overs(matchRequest.getOvers())
                 .dateTime(matchRequest.getDateTime())
                 .scoreboard(scoreboard).build();
+    }
+    private void validateNoCommonPlayer(Team team1, Team team2) {
+        List<Player> playersTeam1 = team1.getPlayers();
+        List<Player> playersTeam2 = team2.getPlayers();
+        for(Player player : playersTeam1) {
+            if(TeamUtils.getPlayerPositionInTeam(team2, player.getId()) != -1)
+                throw new InvalidMatchRequestException("Invalid match request. Both them contains a common player");
+        }
     }
     public Match playInnings(Match match, Boolean isFirstInnings) {
         /*
