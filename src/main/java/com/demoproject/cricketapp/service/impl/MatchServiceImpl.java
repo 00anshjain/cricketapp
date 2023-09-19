@@ -40,10 +40,14 @@ public class MatchServiceImpl implements MatchService {
             matchInfoResponses.add(MatchInfoResponse.builder()
                     .id(match.getId())
                     .dateTime(match.getDateTime())
-                    .scoreboard(match.getScoreboard())
+                    .team1Id(getMatchScoreboard(match.getId()) .getTeam1().getId())
+                    .team2Id(getMatchScoreboard(match.getId()) .getTeam2().getId())
                     .matchWonByTeamID(match.getMatchWonByTeamID())
                     .build());
         }
         return matchInfoResponses;
+    }
+    public void save(Match match) {
+        matchRepository.save(match);
     }
 }

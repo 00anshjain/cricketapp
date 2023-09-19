@@ -1,6 +1,5 @@
 package com.demoproject.cricketapp.beans.response;
 
-import com.demoproject.cricketapp.beans.Scoreboard;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +10,8 @@ import java.time.LocalDateTime;
 public class MatchInfoResponse {
     private String id;
     private LocalDateTime dateTime;
-    private Scoreboard scoreboard;
+    private String team1Id;
+    private String team2Id;
     private String matchWonByTeamID;
 }
+

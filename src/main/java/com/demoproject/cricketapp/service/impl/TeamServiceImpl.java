@@ -22,7 +22,6 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
     public Team addTeam(TeamRequest teamRequest) {
-        System.out.println("Inside addTeam method");
         Team team = Team.builder().id(UUID.randomUUID().toString()).teamName(teamRequest.getTeamName()).build();
         teamRepository.save(team);
         return team;
