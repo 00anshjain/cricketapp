@@ -154,6 +154,7 @@ public class MatchFacadeImpl implements MatchFacade {
     }
     public List<BallEvent> getAllBallEventsInMatch(String matchId)
     {
+        getMatchById(matchId);
         return ballEventService.getAllBallEventInMatch(matchId);
     }
 
