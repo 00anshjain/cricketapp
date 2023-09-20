@@ -34,6 +34,7 @@ public class PlayerServiceTest {
     void testAddPlayer_InvalidPlayerRequest() {
         PlayerRequest playerRequest = new PlayerRequest();
         assertThrows(InvalidRequestException.class, () -> playerService.addPlayer(playerRequest));
+
         verify(playerRepository, never()).save(any(Player.class)); //To verify that this method is never called
     }
 
@@ -54,7 +55,6 @@ public class PlayerServiceTest {
                 .battingSkill(mockPlayerRequest.getBattingSkill())
                 .bowlingSkill(mockPlayerRequest.getBowlingSkill())
                 .build();
-//        when(playerRepository.save(any(Player.class))).thenReturn();
         //thenAnswer to return parameter which was input.
         when(playerRepository.save(any(Player.class))).thenAnswer(i -> i.getArguments()[0]);
         Player player = playerService.addPlayer(mockPlayerRequest);
@@ -63,12 +63,15 @@ public class PlayerServiceTest {
         assertEquals(player.getPlayerType(), mockPlayer.getPlayerType());
         assertEquals(player.getBattingSkill(), mockPlayer.getBattingSkill());
         assertEquals(player.getBowlingSkill(), mockPlayer.getBowlingSkill());
+
+        verify(playerRepository, times(1)).save(any(Player.class));
     }
 
     @Test
     void testAddPlayer_InvalidPlayer() {
         Player player = new Player();
         assertThrows(InvalidRequestException.class, () -> playerService.addPlayer(player));
+
         verify(playerRepository, never()).save(any(Player.class));
     }
 
@@ -84,8 +87,8 @@ public class PlayerServiceTest {
                 .build();
         when(playerRepository.save(player)).thenReturn(player);
         playerService.addPlayer(player);
+
         verify(playerRepository, times(1)).save(player);
-        //To verify that this save method is called only one time.
     }
 
     @Test
@@ -93,37 +96,43 @@ public class PlayerServiceTest {
         String playerId = "1";
         doNothing().when(playerRepository).deleteById(playerId);
         playerService.dropPlayerById(playerId);
+
         verify(playerRepository, times(1)).deleteById(playerId);
     }
 
     @Test
     public void testGetPlayerById_ValidId() {
-        String playerId = "1", playerName = "testPlayer";
-        int playerAge = 5;
+        String mockPlayerId = "1", mockPlayerName = "testPlayer";
+        int mockPlayerAge = 5;
         Player mockPlayer = Player.builder()
-                .id(playerId)
-                .name(playerName)
-                .age(playerAge)
+                .id(mockPlayerId)
+                .name(mockPlayerName)
+                .age(mockPlayerAge)
                 .build();
-        when(playerRepository.findById(playerId)).thenReturn(Optional.of(mockPlayer));
-        Player player = playerService.getPlayerById(playerId);
+        when(playerRepository.findById(mockPlayerId)).thenReturn(Optional.of(mockPlayer));
+        Player player = playerService.getPlayerById(mockPlayerId);
         assertNotNull(player);
-        assertEquals(playerId, player.getId());
-        assertEquals(playerName, player.getName());
-        assertEquals(playerAge, player.getAge());
+        assertEquals(mockPlayerId, player.getId());
+        assertEquals(mockPlayerName, player.getName());
+        assertEquals(mockPlayerAge, player.getAge());
+
+        verify(playerRepository, times(1)).findById(mockPlayerId);
     }
 
     @Test
     public void testGetPlayerById_InvalidId() {
-        String playerId = "testInvalidId";
-        when(playerRepository.findById(playerId)).thenReturn(Optional.empty());
-        assertThrows(InvalidUserInputException.class, () -> playerService.getPlayerById(playerId));
+        String mockPlayerId = "testInvalidId";
+        when(playerRepository.findById(mockPlayerId)).thenReturn(Optional.empty());
+        assertThrows(InvalidUserInputException.class, () -> playerService.getPlayerById(mockPlayerId));
+
+        verify(playerRepository, times(1)).findById(mockPlayerId);
     }
 
     @Test
     public void testGetAllPlayersInfo_NoDataFound() {
         when(playerRepository.findAll()).thenReturn(new ArrayList<>());
         assertThrows(NoDataFoundException.class, () -> playerService.getAllPlayersInfo());
+        verify(playerRepository, times(1)).findAll();
     }
 
     @Test
@@ -146,6 +155,8 @@ public class PlayerServiceTest {
         assertEquals(player.getPlayerType(), response.getPlayerType());
         assertEquals(player.getBattingSkill(), response.getBattingSkill());
         assertEquals(player.getBowlingSkill(), response.getBowlingSkill());
+
+        verify(playerRepository, times(1)).findAll();
     }
 
     @Test
