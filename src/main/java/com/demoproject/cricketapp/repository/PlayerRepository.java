@@ -1,10 +1,17 @@
 package com.demoproject.cricketapp.repository;
 
 import com.demoproject.cricketapp.beans.Player;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface PlayerRepository extends MongoRepository<Player, String>{
+import java.util.List;
+import java.util.Optional;
 
+public interface PlayerRepository {
+
+    void save(Player player);
+
+    void deleteById(String playerId);
+
+    Optional<Player> findById(String playerId);
+
+    List<Player> findAll();
 }
