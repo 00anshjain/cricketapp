@@ -3,6 +3,7 @@ package com.demoproject.cricketapp.service.impl;
 import com.demoproject.cricketapp.beans.Match;
 import com.demoproject.cricketapp.beans.Scoreboard;
 import com.demoproject.cricketapp.beans.response.MatchInfoResponse;
+import com.demoproject.cricketapp.exception.custom.InvalidRequestException;
 import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import com.demoproject.cricketapp.repository.MatchRepository;
 import com.demoproject.cricketapp.service.MatchService;
@@ -48,6 +49,8 @@ public class MatchServiceImpl implements MatchService {
         return matchInfoResponses;
     }
     public void save(Match match) {
+        if(match.getId() == null || match.getId().isEmpty())
+            throw new InvalidRequestException("Match must have an ID.");
         matchRepository.save(match);
     }
 }

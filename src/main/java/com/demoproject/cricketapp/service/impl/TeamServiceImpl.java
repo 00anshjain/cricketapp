@@ -4,6 +4,7 @@ package com.demoproject.cricketapp.service.impl;
 import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.beans.request.TeamRequest;
 import com.demoproject.cricketapp.beans.response.TeamInfoResponse;
+import com.demoproject.cricketapp.exception.custom.InvalidRequestException;
 import com.demoproject.cricketapp.exception.custom.InvalidUserInputException;
 import com.demoproject.cricketapp.exception.custom.NoDataFoundException;
 import com.demoproject.cricketapp.repository.TeamRepository;
@@ -30,6 +31,8 @@ public class TeamServiceImpl implements TeamService {
     }
 
     public Team addTeam(Team team) {
+        if(team == null || team.getTeamName() == null || team.getTeamName().isEmpty())
+            throw new InvalidRequestException("Necessary parameters required for team creation are not given. Kindly check");
         teamRepository.save(team);
         return team;
     }
