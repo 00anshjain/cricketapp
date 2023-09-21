@@ -4,11 +4,9 @@ import com.demoproject.cricketapp.beans.BallEvent;
 import com.demoproject.cricketapp.repository.BallEventRepository;
 import com.demoproject.cricketapp.service.BallEventService;
 import com.demoproject.cricketapp.utils.BallEventUtils;
-import com.demoproject.cricketapp.utils.MatchUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -23,7 +21,7 @@ public class BallEventServiceImpl implements BallEventService {
     }
     public List<BallEvent> getAllBallEventInMatch(String matchId) {
         List<BallEvent> ballEvents = ballEventRepository.findAllByMatchId(matchId);
-        Collections.sort(ballEvents, MatchUtils.comp);
+//        Collections.sort(ballEvents, MatchUtils.comp);
         return ballEvents;
     }
 }
