@@ -4,7 +4,6 @@ import com.demoproject.cricketapp.beans.*;
 import com.demoproject.cricketapp.beans.request.MatchRequest;
 import com.demoproject.cricketapp.beans.response.MatchInfoResponse;
 import com.google.common.collect.Maps;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;

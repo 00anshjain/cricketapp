@@ -7,7 +7,6 @@ import com.demoproject.cricketapp.beans.request.PlayerRequest;
 import com.demoproject.cricketapp.beans.request.TeamRequest;
 import com.demoproject.cricketapp.beans.response.PlayerInfoResponse;
 import com.demoproject.cricketapp.beans.response.TeamInfoResponse;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
