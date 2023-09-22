@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
+
 @Service
 @RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
@@ -66,7 +68,8 @@ public class PlayerServiceImpl implements PlayerService {
     }
     public void updateTeamPlayers(Team team)
     {
-        List<Player> players = team.getPlayers();
+        List<Player> players = new ArrayList<>();
+        copyProperties(team.getPlayers(), players);
         for (Player player : players) {
             String playerId = player.getId();
             Player playerFromDb = getPlayerById(playerId);

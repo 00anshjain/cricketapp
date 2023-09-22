@@ -141,4 +141,10 @@ public class MatchUtils {
     public void getBattingOrderSorted(List<Player> battingTeamPlayers) {
         battingTeamPlayers.sort(Comparator.comparingInt(Player::getBattingSkill).reversed());
     }
+
+    public static List<Player> getTeamPlayersFromScoreboard(Scoreboard scoreboard, String teamId) {
+        if (Objects.equals(teamId, scoreboard.getTeam1().getId()))
+            return scoreboard.getTeam1().getPlayers();;
+        return scoreboard.getTeam2().getPlayers();
+    }
 }

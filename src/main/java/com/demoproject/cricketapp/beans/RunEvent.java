@@ -35,7 +35,6 @@ public class RunEvent extends BallEvent {
     }
     public String getBallResult() {
         double random = Math.random();
-        System.out.println("Random Value: " + random);
         return run.get(findCielInPrefix(random));
 //        return "1";
     }

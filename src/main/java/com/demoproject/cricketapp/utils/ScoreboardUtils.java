@@ -51,6 +51,7 @@ public class ScoreboardUtils {
 
     public static Team updateBatsmanRun(Team team, String playerId, String run) {
         List<Player> players= team.getPlayers();
+
         for(int playersIterator = 0; playersIterator < 11; playersIterator++)
         {
             Player player = players.get(playersIterator);

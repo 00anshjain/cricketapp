@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 
@@ -79,22 +78,11 @@ public class MatchFacadeImpl implements MatchFacade {
         String bowlingTeamId = teamsMap.get("bowlingTeamId");
         int target = isFirstInnings ? -1 : MatchUtils.getTarget(match, bowlingTeamId);
 
-        List<Player> battingTeamPlayers, bowlingTeamPlayers;
         Scoreboard scoreboard = match.getScoreboard();
-
-        if (Objects.equals(battingTeamId, match.getScoreboard().getTeam1().getId()))
-        {
-            battingTeamPlayers = match.getScoreboard().getTeam1().getPlayers();
-            bowlingTeamPlayers = match.getScoreboard().getTeam2().getPlayers();
-        }
-        else
-        {
-            bowlingTeamPlayers = match.getScoreboard().getTeam1().getPlayers();
-            battingTeamPlayers = match.getScoreboard().getTeam2().getPlayers();
-        }
+        List<Player> battingTeamPlayers = MatchUtils.getTeamPlayersFromScoreboard(scoreboard, battingTeamId);
+        List<Player> bowlingTeamPlayers = MatchUtils.getTeamPlayersFromScoreboard(scoreboard, bowlingTeamId);
         MatchUtils.getBattingOrderSorted(battingTeamPlayers);
         List<Player> topFiveBowlers = MatchUtils.getTopFiveBowlers(bowlingTeamPlayers);
-
         long maximumBalls = match.getOvers() * 6L;
         Map<String, Integer> currentPlayers = MatchUtils.initialiseCurrentPlayers();
         int inningsScore = 0, battingTeamSize = battingTeamPlayers.size();
@@ -122,7 +110,6 @@ public class MatchFacadeImpl implements MatchFacade {
                     .setBowlerId(topFiveBowlers.get(bowler).getId());
             ballEvent.setResult(ballEvent.getBallResult());
             ballEventService.save(ballEvent);
-
             scoreboard.update(ballEvent);
             inningsScore = MatchUtils.updateInningsScore(inningsScore, ballEvent);
             MatchUtils.updateCurrentPlayers(currentPlayers, ballEvent);
