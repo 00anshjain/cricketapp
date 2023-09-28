@@ -72,7 +72,6 @@ public class PlayerServiceImpl implements PlayerService {
         for (Player player : players) {
             Player copyPlayer = new Player();
             copyProperties(player, copyPlayer);
-            System.out.println(copyPlayer.getId());
             String playerId = copyPlayer.getId();
             Player playerFromDb = getPlayerById(playerId);
             copyPlayer = PlayerUtils.mergePlayerStats(playerFromDb, copyPlayer);
