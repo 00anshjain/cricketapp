@@ -18,8 +18,8 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     private final MongoTemplate mongoTemplate;
 
     @Override
-    public void save(Player player) {
-        mongoTemplate.save(player);
+    public Player save(Player player) {
+        return mongoTemplate.save(player);
     }
 
     @Override

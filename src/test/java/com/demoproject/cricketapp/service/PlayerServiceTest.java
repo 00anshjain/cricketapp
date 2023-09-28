@@ -16,10 +16,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PlayerServiceTest {
@@ -191,7 +202,7 @@ public class PlayerServiceTest {
                 .mostWickets(2)
                 .build();
 
-        Team mockTeam = Team.builder().teamName("testTeam").players(players).build();
+        Team mockTeam = Team.builder().id("1").teamName("testTeam").players(players).build();
         when(playerRepository.findById("1")).thenReturn(Optional.of(mockPlayer));
         doNothing().when(playerRepository).deleteById("1");
         when(playerRepository.save(any(Player.class))).thenReturn(mockPlayer);

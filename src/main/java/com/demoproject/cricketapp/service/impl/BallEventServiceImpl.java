@@ -20,8 +20,7 @@ public class BallEventServiceImpl implements BallEventService {
         ballEventRepository.save(ballEvent);
     }
     public List<BallEvent> getAllBallEventInMatch(String matchId) {
-        List<BallEvent> ballEvents = ballEventRepository.findAllByMatchId(matchId);
-//        Collections.sort(ballEvents, MatchUtils.comp);
-        return ballEvents;
+        //        Collections.sort(ballEvents, MatchUtils.comp);
+        return ballEventRepository.findAllByMatchId(matchId);
     }
 }

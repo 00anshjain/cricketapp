@@ -41,7 +41,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public void save(Team team) {
-        mongoTemplate.save(team);
+    public Team save(Team team) {
+        return mongoTemplate.save(team);
     }
 }

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface PlayerRepository {
 
-    void save(Player player);
+    Player save(Player player);
 
     void deleteById(String playerId);
 

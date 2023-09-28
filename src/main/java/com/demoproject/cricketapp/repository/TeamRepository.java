@@ -18,5 +18,5 @@ public interface TeamRepository {
 
     void deleteById(String teamId);
 
-    void save(Team team);
+    Team save(Team team);
 }

@@ -1,5 +1,8 @@
 package com.demoproject.cricketapp.commons.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum TossChoice {
     BAT("Bat"),
     BOWL("Bowl");
@@ -9,7 +12,4 @@ public enum TossChoice {
         this.choice = choice;
     }
 
-    public String getChoice() {
-        return choice;
-    }
 }

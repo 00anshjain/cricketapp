@@ -68,14 +68,16 @@ public class PlayerServiceImpl implements PlayerService {
     }
     public void updateTeamPlayers(Team team)
     {
-        List<Player> players = new ArrayList<>();
-        copyProperties(team.getPlayers(), players);
+        List<Player> players = team.getPlayers();
         for (Player player : players) {
-            String playerId = player.getId();
+            Player copyPlayer = new Player();
+            copyProperties(player, copyPlayer);
+            System.out.println(copyPlayer.getId());
+            String playerId = copyPlayer.getId();
             Player playerFromDb = getPlayerById(playerId);
-            player = PlayerUtils.mergePlayerStats(playerFromDb, player);
+            copyPlayer = PlayerUtils.mergePlayerStats(playerFromDb, copyPlayer);
             dropPlayerById(playerId);
-            addPlayer(player);
+            addPlayer(copyPlayer);
         }
     }
 }
