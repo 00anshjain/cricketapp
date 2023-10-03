@@ -8,6 +8,7 @@ import com.demoproject.cricketapp.beans.Team;
 import com.demoproject.cricketapp.beans.Toss;
 import com.demoproject.cricketapp.commons.enums.TossChoice;
 import com.demoproject.cricketapp.exception.custom.InvalidMatchRequestException;
+import com.google.common.collect.Maps;
 import lombok.experimental.UtilityClass;
 
 import java.util.Comparator;
@@ -65,7 +66,8 @@ public class MatchUtils {
     }
 
     public Map<String, String> getBattingAndBowlingTeams(Match match, Boolean isFirstInnings) {
-        Map<String, String> teamsMap = new HashMap<>();
+//        Map<String, String> teamsMap = new HashMap<>();
+        Map<String, String> teamsMap = Maps.newHashMapWithExpectedSize(2);
 
         String team1Id = match.getScoreboard().getTeam1().getId();
         String team2Id = match.getScoreboard().getTeam2().getId();
@@ -136,7 +138,8 @@ public class MatchUtils {
         }
     }
     public Map<String, Integer> initialiseCurrentPlayers() {
-        Map <String, Integer> currentPlayers = new HashMap<>();
+//        Map <String, Integer> currentPlayers = new HashMap<>();
+        Map <String, Integer> currentPlayers = Maps.newHashMapWithExpectedSize(3);
         currentPlayers.put("batsman1", 0);
         currentPlayers.put("batsman2", 1);
         currentPlayers.put("bowler", 0);
